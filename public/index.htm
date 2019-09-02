@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Taxi Tracker</title>
+  </head>
+  <body>
+    <h1>TAXI TRACKER</h1>
+    <div class="GPS-Box">
+      <div id="Long" class="Coordinates">
+        Longitude:
+      </div>
+      <div id="Lat" class="Coordinates">
+        Latitude:
+      </div>
+      <div id="Date" class="Coordinates">
+        Date:
+      </div>
+      <div id="Time" class="Coordinates">
+        Time:
+      </div>
+    </div>
+  </body>
+</html>
+
+<script>
+  let longi = document.getElementById("Long");
+  let lati = document.getElementById("Lat");
+  let date = document.getElementById("Date");
+  let time = document.getElementById("Time");
+
+  function act(long, lat, dat, tim) {
+    longi.innerText = `Longitude: ${long}`;
+    lati.innerText = `Latitude: ${lat}`;
+    date.innerText = `Date: ${dat}`;
+    time.innerText = `Time: ${tim}`;
+  }
+
+  function fetchData() {
+    fetch("/query")
+      .then(function(res) {
+        return res.json();
+      })
+      .then(data => {
+        now = new Date();
+        let nWeeks, day, time, lon, lat;
+        act(`${data.lon}`, `${data.lat}`, `${data.date}`, `${data.time}`);
+      });
+  }
+
+  function go() {
+    fetchData();
+    setTimeout(go, 1000); // callback
+  }
+
+  go();
+</script>
