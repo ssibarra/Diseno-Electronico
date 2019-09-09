@@ -57,9 +57,11 @@ app.get("/query", (req, res) => {
             parseInt(time, 10)
           );
 
-          let newDate = `${dateConvert.getUTCDate()}-${dateConvert.getUTCMonth() +
+          let newDate = `${dateConvert.getUTCDate() +
+            1}-${dateConvert.getUTCMonth() +
             1}-${dateConvert.getUTCFullYear()} `;
-          let newTime = `${dateConvert.getUTCHours()}:${dateConvert.getMinutes()}`;
+          let newTime = `${dateConvert.getUTCHours() -
+            5}:${dateConvert.getMinutes()}`;
 
           data = {
             id: null,
@@ -79,6 +81,6 @@ app.get("/query", (req, res) => {
   }
 });
 
-app.listen(5001, () => {
+app.listen(7000, () => {
   console.log("Server on");
 });
