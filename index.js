@@ -25,7 +25,7 @@ app.use(express.static("public"));
 app.get("/realtime", (req, res) => {
   if (connection) {
     connection.query(
-      "SELECT * FROM gpsdata ORDER BY id DESC limit 1;",
+      "SELECT latitude,longitude,date FROM datatest ORDER BY id DESC limit 1;",
       (err, rows) => {
         if (err) {
           throw err;
@@ -38,20 +38,18 @@ app.get("/realtime", (req, res) => {
 });
 
 app.post("/historical", (req, res) => {
-  console.log(req.body);
-  // if (connection) {
-  //   connection.query(
-  //     "SELECT * FROM gpsdata ORDER BY id DESC limit 1;",
-  //     (err, rows) => {
-  //       if (err) {
-  //         throw err;
-  //       } else {
-
-  //       }
-  //     }
-  //   );
-  // }
-   res.json(req.body);
+  if (connection) {
+    connection.query(
+      "SELECT id,latitude,longitude,date FROM datatest WHERE (id>="+req.body.data1+")&&(id<="+req.body.data2+");",
+      (err, rows) => {
+        if (err) {
+          throw err;
+        } else {
+          res.json(rows);
+        }
+      }
+    );
+  }
 });
 
 app.listen(80, () => {
