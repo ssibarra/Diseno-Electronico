@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const mysql = require("mysql");
-const path = require("path");
 
 var connection = mysql.createConnection({
   host: "desingrds.ci0brdruazre.us-east-1.rds.amazonaws.com",
@@ -40,7 +39,7 @@ app.get("/realtime", (req, res) => {
 app.post("/historical", (req, res) => {
   if (connection) {
     connection.query(
-      "SELECT id,latitude,longitude,date FROM datatest WHERE (id>="+req.body.data1+")&&(id<="+req.body.data2+");",
+      "SELECT id,latitude,longitude,date FROM datatest WHERE id BETWEEN "+req.body.initialdate+" AND "+req.body.finaldate+";",
       (err, rows) => {
         if (err) {
           throw err;

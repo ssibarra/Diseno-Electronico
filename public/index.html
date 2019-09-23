@@ -7,11 +7,11 @@
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script type="text/javascript">
     $(document).ready(function() {
-      prueba();
+      historical("11", "15");
       realtime();
     });
-    function prueba() {
-      const miralo = {data1: "11", data2: "15"};
+    function historical(initiald, finald) {
+      const miralo = {initialdate: initiald, finaldate: finald};
       const options = {
         method: "POST",
         headers: {
@@ -23,9 +23,9 @@
         .then(function(res) {
           return res.json();
         })
-        .then(varo => {
-          var varo = varo;
-          console.log(varo);
+        .then(data => {
+          console.log(data);
+          console.log(data[1].id);
         });
     }
     function realtime() {
@@ -34,16 +34,15 @@
           return res.json();
         })
         .then(data => {
-          var data = data;
           lat = data[0].latitude;
           lon = data[0].longitude;
           date = data[0].date;
-          var year = date[0].concat(date[1],date[2],date[3]);
-          var month = date[4].concat(date[5]);
-          var day = date[6].concat(date[7]);
-          var hour = date[8].concat(date[9]);
-          var min = date[10].concat(date[11]);
-          var sec = date[12].concat(date[13]);
+          const year = date[0].concat(date[1],date[2],date[3]);
+          const month = date[4].concat(date[5]);
+          const day = date[6].concat(date[7]);
+          const hour = date[8].concat(date[9]);
+          const min = date[10].concat(date[11]);
+          const sec = date[12].concat(date[13]);
           document.getElementById("calendar").innerHTML = day.concat("/",month,"/",year);
           document.getElementById("clock").innerHTML = hour.concat(":",min,":",sec);
           document.getElementById("lati").innerHTML = "Latitud: ".concat(lat);

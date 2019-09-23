@@ -27,24 +27,21 @@ def main():
     while True:
         tot_data, addr = sock.recvfrom(1024)
         tot_data = str(tot_data)
-        print(tot_data)
         tot_data = tot_data[2:(len(tot_data)-1)]
-        print(tot_data)
         nWeeks = tot_data[6:10]
         days = tot_data[10]
         time = tot_data[11:16]
         lat = tot_data[16:19] + "." + tot_data[19:24]
         lon = tot_data[24:28] + "." + tot_data[28:33]
         # Escoger el unixtime que le funcione a su instancia
-        # unixtime = (int(nWeeks)*604800)+(int(days)*86400)+int(time)-(5*3600)+315957600
-        unixtime = ((int(nWeeks)-7)*604800)+((int(days)+1)*86400)+int(time)-(5*3600)+315957600
+        unixtime = (int(nWeeks)*604800)+(int(days)*86400)+int(time)-(3*3600)+315957600
         realtime = datetime.datetime.fromtimestamp(unixtime).strftime('%Y%m%d%H%M%S')
         print(realtime)
 
-        send = "INSERT INTO `datatest`(`id`, `latitude`, `longitude`, `date`, `incoming`) VALUES (DEFAULT, %s, %s, %s, %s);"
+        send = "INSERT INTO `gpsdata`(`id`, `latitude`, `longitude`, `date`) VALUES (DEFAULT, %s, %s, %s);"
 
         try:
-            cursor.execute(send, (lat, lon, realtime, tot_data))
+            cursor.execute(send, (lat, lon, realtime))
             # Commit your changes in the database
             connection.commit()
             print('Sent')
