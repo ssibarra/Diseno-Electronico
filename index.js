@@ -29,50 +29,57 @@ app.get("/", function(req, res) {
 app.get("/query", (req, res) => {
   if (connection) {
     connection.query(
-      "SELECT message FROM RDS_diseno.Arriving_Data ORDER BY idpacket DESC limit 1;",
+      "SELECT * FROM RDS_diseno.Arriving_Data ORDER BY idpacket DESC limit 1;",
       (err, rows) => {
+        console.log(rows);
         if (err) {
           throw err;
         } else {
-          let nWeeks, syrusID, time, lon, lat, newMsg;
-          newMsg = rows[0].message;
-          newMsg = newMsg.split("");
+          let nWeeks, time, lng, lat;
+          lat = rows[0].lat;
+          lat = `${lat[0]}${lat[1]}${lat[2]}.${lat[3]}${lat[4]}${lat[5]}${
+            lat[6]
+          }${lat[7]}`;
+          lng = rows[0].lng;
+          lng = `${lng[0]}${lng[1]}${lng[2]}${lng[3]}.${lng[4]}${lng[5]}${
+            lng[6]
+          }${lng[7]}${lng[8]}`;
+          // newMsg = newMsg.split("");
 
-          nWeeks = `${newMsg[6]}${newMsg[7]}${newMsg[8]}${newMsg[9]}`;
-          time = `${newMsg[11]}${newMsg[12]}${newMsg[13]}${newMsg[14]}${
-            newMsg[15]
-          }`;
-          lat = `${newMsg[16]}${newMsg[17]}${newMsg[18]}.${newMsg[19]}${
-            newMsg[20]
-          }${newMsg[21]}${newMsg[22]}${newMsg[23]}`;
-          lon = `${newMsg[24]}${newMsg[25]}${newMsg[26]}${newMsg[27]}.${
-            newMsg[28]
-          }${newMsg[29]}${newMsg[30]}${newMsg[31]}${newMsg[32]}`;
-          syrusID = `${newMsg[45]}${newMsg[46]}${newMsg[47]}${newMsg[48]}${
-            newMsg[49]
-          }${newMsg[50]}${newMsg[51]}${newMsg[52]}`;
+          // nWeeks = `${newMsg[6]}${newMsg[7]}${newMsg[8]}${newMsg[9]}`;
+          // time = `${newMsg[11]}${newMsg[12]}${newMsg[13]}${newMsg[14]}${
+          //   newMsg[15]
+          // }`;
 
-          let dateConvert = gpsConv.wnTowToUtcTimestamp(
-            parseInt(nWeeks, 10),
-            parseInt(time, 10)
-          );
+          // lat = `${newMsg[16]}${newMsg[17]}${newMsg[18]}.${newMsg[19]}${
+          //   newMsg[20]
+          // }${newMsg[21]}${newMsg[22]}${newMsg[23]}`;
+          // lon = `${newMsg[24]}${newMsg[25]}${newMsg[26]}${newMsg[27]}.${
+          //   newMsg[28]
+          // }${newMsg[29]}${newMsg[30]}${newMsg[31]}${newMsg[32]}`;
+          // syrusID = `${newMsg[45]}${newMsg[46]}${newMsg[47]}${newMsg[48]}${
+          //   newMsg[49]
+          // }${newMsg[50]}${newMsg[51]}${newMsg[52]}`;
 
-          let newDate = `${dateConvert.getUTCDate() +
-            1}-${dateConvert.getUTCMonth() +
-            1}-${dateConvert.getUTCFullYear()} `;
-          let newTime = `${dateConvert.getUTCHours() -
-            5}:${dateConvert.getMinutes()}`;
+          // let dateConvert = gpsConv.wnTowToUtcTimestamp(
+          //   parseInt(nWeeks, 10),
+          //   parseInt(time, 10)
+          // );
+
+          // let newDate = `${dateConvert.getUTCDate() +
+          //   1}-${dateConvert.getUTCMonth() +
+          //   1}-${dateConvert.getUTCFullYear()} `;
+          // let newTime = `${dateConvert.getUTCHours() -
+          //   5}:${dateConvert.getMinutes()}`;
 
           data = {
-            id: null,
-            date: newDate,
-            time: newTime,
-            lon: lon,
-            lat: lat,
-            syrusID: syrusID
+            // id: null,
+            // date: newDate,
+            // time: newTime,
+            lon: lng,
+            lat: lat
+            // syrusID: syrusID
           };
-
-          console.log(data.date);
 
           res.json(data);
         }
