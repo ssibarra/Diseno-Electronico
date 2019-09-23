@@ -1,0 +1,141 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-image: url('../images/Marmol.jpg'); 
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
+}
+
+#contenido {
+	width: 100%;
+	height: 100vh;
+	background-color: rgba(255,255,255,0.3);
+}
+
+#contenido header {
+	height: 150px;
+	background-color: rgba(255,255,255,1);
+	/* background-image: url('../images/White.jpg'); */
+	opacity: 0.5;
+}
+
+#contenido header #imgpro img {
+	margin-top: -315px;
+	margin-left: -220px;
+	left: 50%;
+	top: 50%;
+	position: absolute;
+}
+
+#contenido .wrap{
+	width:  25%;
+	height: 77% ;
+	background-color: rgba(0,0,0,1);
+}
+
+#contenido .wrap ul.tabs{
+	width: 100%;
+	background: #363636;
+	list-style: none;
+	display: flex;
+}
+
+ul.tabs li {
+	width: 50%
+}
+
+#contenido .wrap ul.tabs li a{
+	color: #fff;
+	text-decoration: none;
+	font-size: 16px;
+	display: block;
+	padding: 10px 0px;
+	text-align: center;
+}
+
+.active{
+	background:	#0984CC;
+}
+
+.secciones{
+	width: 100%;
+	background-image: url('../images/Marmol.jpg'); 
+}
+
+.secciones article{
+	padding: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#contenido  #map {
+	width: 1000px;
+	height: 500px;
+	float: right;
+	margin-top: 150px;
+	margin-right: 15px;
+	background: rgba(0,0,0,0.6);
+}
+
+#contenido .wrap .secciones #tab1 #Actual  {
+	width: 250px;
+	height: 200px;
+	float: left;
+	margin-top: 145px;
+	margin-left:20px;
+	background: rgba(255,255,255,0.4);
+}
+
+#contenido .wrap .secciones #tab2 section {
+	width: 1000px;
+	height: 420px;
+	float: right;
+	margin-top: 223px;
+	margin-right: 20px;
+	background: white;
+}
+
+#contenido .wrap .secciones #tab2 #HistorialFechaHora {
+	width: 250px;
+	height: 230px;
+	float: left;
+	margin-top: 150px;
+	margin-left: 30px;
+	background: rgba(255,255,255,0.4);
+	text-align: center;
+	line-height: 40px;
+}
+
+
+#contenido .wrap .secciones #tab2 #tie {
+	width: 250px;
+	height: 50px;
+	float: left;
+	margin-top: 90px;
+	margin-left:-250px;
+	background: rgba(255,255,255,0.4);
+	text-align: center;
+	line-height: 40px;
+}
+
+#contenido .wrap .secciones #tab1 #Actual h1{
+text-align: center;
+}
