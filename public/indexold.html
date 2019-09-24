@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      historical("11", "15");
+      realtime();
+    });
+    function historical(initiald, finald) {
+      const miralo = {initialdate: initiald, finaldate: finald};
+      const options = {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(miralo)
+      };
+      fetch("/historical", options)
+        .then(function(res) {
+          return res.json();
+        })
+        .then(data => {
+          console.log(data);
+          console.log(data[1].id);
+        });
+    }
+    function realtime() {
+      fetch("/realtime")
+        .then(function(res) {
+          return res.json();
+        })
+        .then(data => {
+          lat = data[0].latitude;
+          lon = data[0].longitude;
+          date = data[0].date;
+          const year = date[0].concat(date[1],date[2],date[3]);
+          const month = date[4].concat(date[5]);
+          const day = date[6].concat(date[7]);
+          const hour = date[8].concat(date[9]);
+          const min = date[10].concat(date[11]);
+          const sec = date[12].concat(date[13]);
+          document.getElementById("calendar").innerHTML = day.concat("/",month,"/",year);
+          document.getElementById("clock").innerHTML = hour.concat(":",min,":",sec);
+          document.getElementById("lati").innerHTML = "Latitud: ".concat(lat);
+          document.getElementById("long").innerHTML = "Longitud: ".concat(lon);
+          var punto = L.marker([lat, lon]);
+          punto.addTo(map);
+          setTimeout(function(){
+              punto.remove(map);
+          }, 2000);
+          setTimeout(realtime, 2000);
+        });
+    }
+    </script>
+  <style>
+    #map {position: absolute; top: 0; right: 0; bottom: 0; left: 1; height: 100%; width: 85%;}
+  </style>
+</head>
+<body>
+  <h1>GPS Syrus</h1>
+  <p id="calendar"></p>
+  <p id="clock"></p>
+  <p id="lati"></p>
+  <p id="long"></p>
+  <div id="map"></div>
+  <script>
+    //var map = L.map('map').setView([11.01922, -74.85016], 17);
+    var map = L.map('map').setView([10.96479, -74.79355], 12);
+    L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=HN1Y37NyX68vLnrA36fj',{
+      tileSize: 512,
+      zoomOffset: -1,
+      minZoom: 1,
+      attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">© MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>',
+      crossOrigin: true
+    }).addTo(map);
+  </script>
+</body>
+</html>

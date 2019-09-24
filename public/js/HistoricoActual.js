@@ -1,4 +1,4 @@
-function Historico(dtlinicio,dtlfinal){
+/*function Historico(dtlinicio,dtlfinal){
 	// Conversión a string inicio y final
 
 	if ((dtlinicio == '') || (dtlfinal == '') || (dtlinicio == dtlfinal) || (dtlfinal < dtlinicio)) {
@@ -18,5 +18,4 @@ function Historico(dtlinicio,dtlfinal){
 		}
 
 	}*/
-	}
-};
+	 /*
