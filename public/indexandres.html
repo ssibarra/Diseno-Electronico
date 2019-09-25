@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<<<<<<< HEAD
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<title>Taxi Tracker</title>
@@ -94,6 +95,37 @@
 	var poly = L.polyline([]);
 	function realtime() {
 		//var exp = L.LatLng(0,0);
+=======
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      historical("20190925130336", "20190925150336");
+      realtime();
+    });
+    function historical(initiald, finald) {
+      const miralo = {initialdate: initiald, finaldate: finald};
+      const options = {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(miralo)
+      };
+      fetch("/historical", options)
+        .then(function(res) {
+          return res.json();
+        })
+        .then(data => {
+          console.log(data);
+          console.log(data.length);
+          console.log(data[2].date);
+        });
+    }
+    function realtime() {
+>>>>>>> Bend
       fetch("/realtime")
         .then(function(res) {
           return res.json();

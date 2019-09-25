@@ -33,10 +33,8 @@ def main():
         time = tot_data[11:16]
         lat = tot_data[16:19] + "." + tot_data[19:24]
         lon = tot_data[24:28] + "." + tot_data[28:33]
-        # Escoger el unixtime que le funcione a su instancia
         unixtime = (int(nWeeks)*604800)+(int(days)*86400)+int(time)-(3*3600)+315957600
         realtime = datetime.datetime.fromtimestamp(unixtime).strftime('%Y%m%d%H%M%S')
-        print(realtime)
 
         send = "INSERT INTO `gpsdata`(`id`, `latitude`, `longitude`, `date`) VALUES (DEFAULT, %s, %s, %s);"
 
@@ -44,7 +42,7 @@ def main():
             cursor.execute(send, (lat, lon, realtime))
             # Commit your changes in the database
             connection.commit()
-            print('Sent')
+            print("Sent " + realtime)
         except:
             # Rollback in case there is any error
             connection.rollback()
