@@ -7,7 +7,7 @@
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script type="text/javascript">
     $(document).ready(function() {
-      historical("11", "15");
+      historical("20190925130336", "20190925150336");
       realtime();
     });
     function historical(initiald, finald) {
@@ -25,7 +25,8 @@
         })
         .then(data => {
           console.log(data);
-          console.log(data[1].id);
+          console.log(data.length);
+          console.log(data[2].date);
         });
     }
     function realtime() {

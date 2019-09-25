@@ -39,7 +39,7 @@ app.get("/realtime", (req, res) => {
 app.post("/historical", (req, res) => {
   if (connection) {
     connection.query(
-      "SELECT id,latitude,longitude,date FROM datatest WHERE id BETWEEN "+req.body.initialdate+" AND "+req.body.finaldate+";",
+      "SELECT latitude,longitude,date FROM datatest WHERE date BETWEEN "+req.body.initialdate+" AND "+req.body.finaldate+";",
       (err, rows) => {
         if (err) {
           throw err;
