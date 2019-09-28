@@ -128,8 +128,8 @@
           
           var punto = L.marker([lat, lon]).addTo(map);
           
-          //punto.bindPopup("<b>Hello I'm in !</b><br> ["+ lat + "," + lon + "]<br> Date: " + year + "/" + month +"/" + day+ "<br> Hour: "+ hour + ":" + min + ":" + sec).openPopup();
-          marker.addTo(layerGroup);
+          punto.bindPopup("<b>Hello I'm in !</b><br> ["+ lat + "," + lon + "]<br> Date: " + year + "/" + month +"/" + day+ "<br> Hour: "+ hour + ":" + min + ":" + sec).openPopup();
+          punto.addTo(layerGroup);
           setTimeout(realtime, 2000);
           polyline(lat, lon);
           poly.addTo(map);
