@@ -56,9 +56,9 @@
 					<article id="tab2">
 			  			<aside id="HistorialFechaHora">
 							<label>Fecha y Hora de Inicio</label>
-							<input type="datetime-local" name="comienzo" id="comienzo" value="2019-09-25T13:00" >
+							<input type="datetime-local" name="comienzo" id="comienzo" value="2019-09-28T22:27" >
 							<label>Fecha y Hora de Fin</label>
-							<input type="datetime-local" name="final" id="final" value="2019-09-25T15:00" >
+							<input type="datetime-local" name="final" id="final" value="2019-09-28T22:32" >
 							<button onclick="getDateTime();">Enviar</button>
 						</aside>
 						<aside id="tie">
@@ -73,12 +73,13 @@
 var activeTab
 var lastmarker
 var layerGroup = L.featureGroup().addTo(map);
+//Inicio de pagina
 	$(document).ready(function(){
 		$('ul.tabs li a:first').addClass('active');
 		$('.secciones article').hide(); /* Ocultamos a todos */
 		$('.secciones article:first').show();
 		inicio();		
-    	$('ul.tabs li a').click(function tabsclick(){          /* Cuando le undamos click a un enlace se va a ejecutar una funcion */
+    	$('ul.tabs li a').click(function tabsclick(){    /* Cuando le undamos click a un enlace se va a ejecutar una funcion */
 			$('ul.tabs li a').removeClass('active');
 			$(this).addClass('active');
 			$('.secciones article').hide();          /* Cuando hagamos clik todas las secciones se ocultan */
@@ -87,21 +88,23 @@ var layerGroup = L.featureGroup().addTo(map);
 			$(activeTab).show();
 		});
 	});
+//La funcion que se crea apenas carga la pagina
 	function inicio(){
 		activeTab = '#tab1'
 		frealtime();
-
 	};
+//Lo que ocurre en el cambio de pestañas
 	function prepare(activeTab){
 		if (activeTab == '#tab1') {
+			erase(layerGroup);
+			layerGroup = L.featureGroup().addTo(map);
 			frealtime();
-
 		}else{
 			erase(layerGroup);
+			layerGroup = L.featureGroup().addTo(map);
 		};
-	}
-	
-	//var poliGroup = L.layerGroup().addTo(map);
+	}	
+//var poliGroup = L.layerGroup().addTo(map);
 	function realtime() {
 		if (activeTab=='#tab1') {
 	        fetch("/realtime")
@@ -135,8 +138,7 @@ var layerGroup = L.featureGroup().addTo(map);
 	        });
     };
 }
-
-function frealtime() {
+	function frealtime() {
 		if (activeTab=='#tab1') {
 	        fetch("/realtime")
 	        .then(function(res) { 
@@ -161,14 +163,14 @@ function frealtime() {
 	          lastmarker.addTo(layerGroup);
 	          setTimeout(realtime, 2000);
 	        });
-    };
-}
-	        function polyline(lat,lon){
-	          var newpoly = new L.LatLng(lat,lon);
-	          poly.addLatLng(newpoly);
-	          //poly.addTo(poliGroup)
-	          
-	        }
+    	};
+	}
+//Se crea la polilinea
+    function polyline(lat,lon){
+      var newpoly = new L.LatLng(lat,lon);
+      poly.addLatLng(newpoly);
+      //poly.addTo(poliGroup)	          
+    }
 //Obtener la info del formulario
 		function getDateTime() {
 		// Obtener formulario de inicio y final
@@ -200,27 +202,44 @@ function frealtime() {
           return res.json();
         })
         .then(data => {
-          console.log(data);
-          console.log(data.length);
-          console.log(data[2].date);
+          	console.log(data);
+         	console.log(data.length);
+          	console.log(data[2].date);
+      	 	lat = data[0].latitude;
+	        lon = data[0].longitude;
+	        date = data[0].date;
+	        var year = date[0].concat(date[1],date[2],date[3]);
+	        var month = date[4].concat(date[5]);
+	        var day = date[6].concat(date[7]);
+	        var hour = date[8].concat(date[9]);
+	        var min = date[10].concat(date[11]);
+	        var sec = date[12].concat(date[13]);
+          	lasthistorical = L.marker([data[0].latitude, data[0].longitude]).addTo(map);
+	        lasthistorical.addTo(layerGroup);
+          	for (i=1;data.length;i++){
+          	  	lat = data[i].latitude;
+	          	lon = data[i].longitude;
+	            date = data[i].date;
+	            var year = date[0].concat(date[1],date[2],date[3]);
+	            var month = date[4].concat(date[5]);
+	            var day = date[6].concat(date[7]);
+	            var hour = date[8].concat(date[9]);
+	            var min = date[10].concat(date[11]);
+	            var sec = date[12].concat(date[13]);
+	            var punto = L.marker([lat, lon]).addTo(map);
+	            punto.bindPopup("<b>Hello I'm in !</b><br> ["+ lat + "," + lon + "]<br> Date: " + year + "/" + month +"/" + day+ "<br> Hour: "+ hour + ":" + min + ":" + sec).openPopup();
+	            var latlongs = Array();
+	            latlongs.push(lastmarker.getLatLng());
+	            latlongs.push(punto.getLatLng());
+			    var poly = L.polyline(latlongs).addTo(map);
+	            punto.addTo(layerGroup);
+	            lastmarker = punto;
+	            poly.addTo(layerGroup);
+          	}
         });
     }
-/*
-	function prueba(){
-		var marker = L.marker([11.010, -74.85]).addTo(map);
-		marker.bindPopup("<b>Marker 1 !</b>").openPopup();
-		marker.addTo(layerGroup);
-		//erase(layerGroup);
-	}*/
-
 //Borrar data
 	function erase(layerGroup){
 		layerGroup.clearLayers();
-		//poly.setLatlngs([]);
-
-		//poliGroup.removeLayer();
-		/*var marker = L.marker([11.013456, -74.856488]).addTo(map);
-		marker.bindPopup("<b>Marker erase !</b>").openPopup();*/
 	}
 </script>
-
