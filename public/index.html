@@ -71,7 +71,7 @@
 </html>
 <script type="text/javascript">
 var activeTab
-var poly = L.polyline([]);
+var lastmarker
 var layerGroup = L.featureGroup().addTo(map);
 	$(document).ready(function(){
 		$('ul.tabs li a:first').addClass('active');
@@ -89,15 +89,15 @@ var layerGroup = L.featureGroup().addTo(map);
 	});
 	function inicio(){
 		activeTab = '#tab1'
-		realtime();
+		frealtime();
 
 	};
 	function prepare(activeTab){
 		if (activeTab == '#tab1') {
-			realtime(activeTab);
+			frealtime();
 
 		}else{
-			erase(layerGroup,poly);
+			erase(layerGroup);
 		};
 	}
 	
@@ -124,16 +124,45 @@ var layerGroup = L.featureGroup().addTo(map);
 	          document.getElementById("long").innerHTML     = "<b>Longitude:</b> <br>".concat(lon);
 	          var punto = L.marker([lat, lon]).addTo(map);
 	          punto.bindPopup("<b>Hello I'm in !</b><br> ["+ lat + "," + lon + "]<br> Date: " + year + "/" + month +"/" + day+ "<br> Hour: "+ hour + ":" + min + ":" + sec).openPopup();
+	          var latlongs = Array();
+	          latlongs.push(lastmarker.getLatLng());
+	          latlongs.push(punto.getLatLng());
+			  var poly = L.polyline(latlongs).addTo(map);
 	          punto.addTo(layerGroup);
-	          polyline(lat, lon);
-	          //poly.addTo(map);
+	          lastmarker = punto;
 	          poly.addTo(layerGroup);
-
 	          setTimeout(realtime, 2000);
 	        });
     };
 }
 
+function frealtime() {
+		if (activeTab=='#tab1') {
+	        fetch("/realtime")
+	        .then(function(res) { 
+	          return res.json();
+	        })
+	        .then(data => {
+	          lat = data[0].latitude;
+	          lon = data[0].longitude;
+	          date = data[0].date;
+	          const year = date[0].concat(date[1],date[2],date[3]);
+	          const month = date[4].concat(date[5]);
+	          const day = date[6].concat(date[7]);
+	          const hour = date[8].concat(date[9]);
+	          const min = date[10].concat(date[11]);
+	          const sec = date[12].concat(date[13]);
+	          document.getElementById("calendar").innerHTML = "<b>Day:</b><br>".concat(day.concat("/",month,"/",year));
+	          document.getElementById("clock").innerHTML    = "<b>Hour:</b><br>".concat(hour.concat(":",min,":",sec));
+	          document.getElementById("lati").innerHTML     = "<b>Latitude:</b> <br>".concat(lat);
+	          document.getElementById("long").innerHTML     = "<b>Longitude:</b> <br>".concat(lon);
+	          lastmarker = L.marker([lat, lon]).addTo(map);
+	          lastmarker.bindPopup("<b>Hello I'm in !</b><br> ["+ lat + "," + lon + "]<br> Date: " + year + "/" + month +"/" + day+ "<br> Hour: "+ hour + ":" + min + ":" + sec).openPopup();
+	          lastmarker.addTo(layerGroup);
+	          setTimeout(realtime, 2000);
+	        });
+    };
+}
 	        function polyline(lat,lon){
 	          var newpoly = new L.LatLng(lat,lon);
 	          poly.addLatLng(newpoly);
@@ -185,7 +214,7 @@ var layerGroup = L.featureGroup().addTo(map);
 	}*/
 
 //Borrar data
-	function erase(layerGroup,poly){
+	function erase(layerGroup){
 		layerGroup.clearLayers();
 		//poly.setLatlngs([]);
 
