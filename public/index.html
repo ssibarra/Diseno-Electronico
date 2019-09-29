@@ -11,23 +11,7 @@
 	    <style>
 	    	#map {position: absolute; top: 0; right: 0; bottom: 0; left: 1; height: 100%; width: 85%;}
 	    </style>
-	    <script type="text/javascript">
-	    	$(document).ready(function(){
-			$('ul.tabs li a:first').addClass('active');
-			$('.secciones article').hide(); /* Ocultamos a todos */
-			$('.secciones article:first').show();
-			inicio();
-		
-	    	$('ul.tabs li a').click(function tabsclick(){          /* Cuando le undamos click a un enlace se va a ejecutar una funcion */
-				$('ul.tabs li a').removeClass('active');
-				$(this).addClass('active');
-				$('.secciones article').hide();          /* Cuando hagamos clik todas las secciones se ocultan */
-				var activeTab = $(this).attr('href');  /* Cuando le undamos click va a traer el atributo del href que sea */
-				prepare(activeTab);
-				$(activeTab).show();
-			});
-			});
-	    </script>
+	    
 	</head>
 	<body id="contenido">
 			<header>
@@ -86,60 +70,76 @@
 	</body>
 </html>
 <script type="text/javascript">
+var activeTab
+var poly = L.polyline([]);
+var layerGroup = L.featureGroup().addTo(map);
+	$(document).ready(function(){
+		$('ul.tabs li a:first').addClass('active');
+		$('.secciones article').hide(); /* Ocultamos a todos */
+		$('.secciones article:first').show();
+		inicio();		
+    	$('ul.tabs li a').click(function tabsclick(){          /* Cuando le undamos click a un enlace se va a ejecutar una funcion */
+			$('ul.tabs li a').removeClass('active');
+			$(this).addClass('active');
+			$('.secciones article').hide();          /* Cuando hagamos clik todas las secciones se ocultan */
+			activeTab = $(this).attr('href');  /* Cuando le undamos click va a traer el atributo del href que sea */
+			prepare(activeTab);
+			$(activeTab).show();
+		});
+	});
 	function inicio(){
+		activeTab = '#tab1'
 		realtime();
-		//prueba();
 
 	};
-</script>
-<script type="text/javascript">
 	function prepare(activeTab){
 		if (activeTab == '#tab1') {
 			realtime(activeTab);
 
 		}else{
-			historical(activeTab);
-		}
-	};
-</script>
-<script type="text/javascript">
-	var poly = L.polyline([]);
-	var layerGroup = L.layerGroup().addTo(map);
+			erase(layerGroup,poly);
+		};
+	}
+	
+	//var poliGroup = L.layerGroup().addTo(map);
 	function realtime() {
-		erase(layerGroup);
-        fetch("/realtime")
-        .then(function(res) {
-          return res.json();
-        })
-        .then(data => {
-          lat = data[0].latitude;
-          lon = data[0].longitude;
-          date = data[0].date;
-          const year = date[0].concat(date[1],date[2],date[3]);
-          const month = date[4].concat(date[5]);
-          const day = date[6].concat(date[7]);
-          const hour = date[8].concat(date[9]);
-          const min = date[10].concat(date[11]);
-          const sec = date[12].concat(date[13]);
-          document.getElementById("calendar").innerHTML = "<b>Day:</b><br>".concat(day.concat("/",month,"/",year));
-          document.getElementById("clock").innerHTML    = "<b>Hour:</b><br>".concat(hour.concat(":",min,":",sec));
-          document.getElementById("lati").innerHTML     = "<b>Latitude:</b> <br>".concat(lat);
-          document.getElementById("long").innerHTML     = "<b>Longitude:</b> <br>".concat(lon);
-          
-          var punto = L.marker([lat, lon]).addTo(map);
-          
-          punto.bindPopup("<b>Hello I'm in !</b><br> ["+ lat + "," + lon + "]<br> Date: " + year + "/" + month +"/" + day+ "<br> Hour: "+ hour + ":" + min + ":" + sec).openPopup();
-          punto.addTo(layerGroup);
-          setTimeout(realtime, 2000);
-          polyline(lat, lon);
-          poly.addTo(map);
-        });
-        function polyline(lat,lon){
-          var newpoly = new L.LatLng(lat,lon);
-          poly.addLatLng(newpoly);
-          
-        };
+		if (activeTab=='#tab1') {
+	        fetch("/realtime")
+	        .then(function(res) { 
+	          return res.json();
+	        })
+	        .then(data => {
+	          lat = data[0].latitude;
+	          lon = data[0].longitude;
+	          date = data[0].date;
+	          const year = date[0].concat(date[1],date[2],date[3]);
+	          const month = date[4].concat(date[5]);
+	          const day = date[6].concat(date[7]);
+	          const hour = date[8].concat(date[9]);
+	          const min = date[10].concat(date[11]);
+	          const sec = date[12].concat(date[13]);
+	          document.getElementById("calendar").innerHTML = "<b>Day:</b><br>".concat(day.concat("/",month,"/",year));
+	          document.getElementById("clock").innerHTML    = "<b>Hour:</b><br>".concat(hour.concat(":",min,":",sec));
+	          document.getElementById("lati").innerHTML     = "<b>Latitude:</b> <br>".concat(lat);
+	          document.getElementById("long").innerHTML     = "<b>Longitude:</b> <br>".concat(lon);
+	          var punto = L.marker([lat, lon]).addTo(map);
+	          punto.bindPopup("<b>Hello I'm in !</b><br> ["+ lat + "," + lon + "]<br> Date: " + year + "/" + month +"/" + day+ "<br> Hour: "+ hour + ":" + min + ":" + sec).openPopup();
+	          punto.addTo(layerGroup);
+	          polyline(lat, lon);
+	          //poly.addTo(map);
+	          poly.addTo(layerGroup);
+
+	          setTimeout(realtime, 2000);
+	        });
     };
+}
+
+	        function polyline(lat,lon){
+	          var newpoly = new L.LatLng(lat,lon);
+	          poly.addLatLng(newpoly);
+	          //poly.addTo(poliGroup)
+	          
+	        }
 //Obtener la info del formulario
 		function getDateTime() {
 		// Obtener formulario de inicio y final
@@ -158,7 +158,6 @@
 		};	
 //Historicos
 	function historical(initiald, finald) {
-		erase(layerGroup);
         const miralo = {initialdate: initiald, finaldate: finald};
         const options = {
         method: "POST",
@@ -177,27 +176,20 @@
           console.log(data[2].date);
         });
     }
-//Funcion de Prueba
-/*var layerGroup = L.layerGroup().addTo(map);
+/*
 	function prueba(){
 		var marker = L.marker([11.010, -74.85]).addTo(map);
 		marker.bindPopup("<b>Marker 1 !</b>").openPopup();
-		marker.addTo(layerGroup);
-		var marker = L.marker([11.011, -74.85]).addTo(map);
-		marker.bindPopup("<b>Marker 2 !</b>").openPopup();
-		marker.addTo(layerGroup);
-		var marker = L.marker([11.012, -74.85]).addTo(map);
-		marker.bindPopup("<b>Marker 3 !</b>").openPopup();
-		marker.addTo(layerGroup);
-		var marker = L.marker([11.013456, -74.856488]).addTo(map);
-		marker.bindPopup("<b>Marker 4 !</b>").openPopup();
 		marker.addTo(layerGroup);
 		//erase(layerGroup);
 	}*/
 
 //Borrar data
-	function erase(layerGroup){
+	function erase(layerGroup,poly){
 		layerGroup.clearLayers();
+		//poly.setLatlngs([]);
+
+		//poliGroup.removeLayer();
 		/*var marker = L.marker([11.013456, -74.856488]).addTo(map);
 		marker.bindPopup("<b>Marker erase !</b>").openPopup();*/
 	}
