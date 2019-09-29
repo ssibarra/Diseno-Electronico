@@ -1,16 +1,15 @@
 import socket
-import struct
 import pymysql
 
-host = "rdsdiseno.c37pqurbdepy.us-east-1.rds.amazonaws.com"
+host = "desingrds.ci0brdruazre.us-east-1.rds.amazonaws.com"
 port = 3306
-dbname = "RDS_diseno"
-user = "admin"
-password = "diseno1234"
+dbname = "desingdata"
+user = "Administrator"
+password = "Administrator"
 
-conn = pymysql.connect(host, user=user, port=port, passwd=password, db=dbname)
+connection = pymysql.connect(host, user=user, port=port, passwd=password, db=dbname)
 print('Server conected')
-cursor = conn.cursor()
+cursor = connection.cursor()
 cursor.execute("SELECT VERSION()")
 data = cursor.fetchone()
 print("Database version : {0}".format(data))
@@ -18,29 +17,31 @@ print("Database version : {0}".format(data))
 
 def main():
 
-    IP = '192.168.1.65'
-    PORT = 6000
+    IP = '172.31.31.63'
+    PORT = 5000
     # Creating the socket to lisent UDP packets
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.bind((IP, PORT))  # Config the IP and PORT
     print('Listening ' + IP + ':' + str(PORT) + ' ...')
     while True:
         tot_data, addr = sock.recvfrom(1024)
-        print(tot_data)
-        print(addr[0])
-        print(addr[1])
+        tot_data = str(tot_data)
+        tot_data = tot_data[2:(len(tot_data)-1)]
 
-        sql = "INSERT INTO Arriving_Data (ipsource, port, message)  VALUES (%s, %s, %s);"
+        lat = tot_data[0:3] + "." + tot_data[3:7]
+        lon = tot_data[7:11] + "." + tot_data[11:15]
+        realtime = tot_data[15:]
+        send = "INSERT INTO `gpsdata`(`id`, `latitude`, `longitude`, `date`) VALUES (DEFAULT, %s, %s, %s);"
 
         try:
-            cursor.execute(sql, (addr[0], addr[1], tot_data))
+            cursor.execute(send, (lat, lon, realtime))
             # Commit your changes in the database
-            conn.commit()
-            print('Sent')
+            connection.commit()
+            print("Sent " + realtime)
         except:
             # Rollback in case there is any error
-            conn.rollback()
-            print('Error')
+            connection.rollback()
+            print("Error" + realtime)
 
 
 main()
