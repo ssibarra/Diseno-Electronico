@@ -83,12 +83,12 @@ var layerGroup = L.featureGroup().addTo(map);
 			$('ul.tabs li a').removeClass('active');
 			$(this).addClass('active');
 			$('.secciones article').hide();          /* Cuando hagamos clik todas las secciones se ocultan */
-			activeTab = $(this).attr('href');  /* Cuando le undamos click va a traer el atributo del href que sea */
+			activeTab = $(this).attr('href'); /* Cuando le undamos click va a traer el atributo del href */
 			prepare(activeTab);
 			$(activeTab).show();
 		});
 	});
-//La funcion que se crea apenas carga la pagina
+//La funcion que se carga apenas inicia la pagina
 	function inicio(){
 		activeTab = '#tab1'
 		frealtime();
@@ -165,12 +165,6 @@ var layerGroup = L.featureGroup().addTo(map);
 	        });
     	};
 	}
-//Se crea la polilinea
-    function polyline(lat,lon){
-      var newpoly = new L.LatLng(lat,lon);
-      poly.addLatLng(newpoly);
-      //poly.addTo(poliGroup)	          
-    }
 //Obtener la info del formulario
 		function getDateTime() {
 		// Obtener formulario de inicio y final
@@ -229,11 +223,11 @@ var layerGroup = L.featureGroup().addTo(map);
 	            var punto = L.marker([lat, lon]).addTo(map);
 	            punto.bindPopup("<b>Hello I'm in !</b><br> ["+ lat + "," + lon + "]<br> Date: " + year + "/" + month +"/" + day+ "<br> Hour: "+ hour + ":" + min + ":" + sec).openPopup();
 	            var latlongs = Array();
-	            latlongs.push(lastmarker.getLatLng());
+	            latlongs.push(lasthistorical.getLatLng());
 	            latlongs.push(punto.getLatLng());
 			    var poly = L.polyline(latlongs).addTo(map);
 	            punto.addTo(layerGroup);
-	            lastmarker = punto;
+	            lasthistorical = punto;
 	            poly.addTo(layerGroup);
           	}
         });
