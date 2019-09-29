@@ -24,7 +24,7 @@ app.use(express.static("public"));
 app.get("/realtime", (req, res) => {
   if (connection) {
     connection.query(
-      "SELECT latitude,longitude,date FROM datatest ORDER BY id DESC limit 1;",
+      "SELECT latitude,longitude,date FROM gpsdata ORDER BY id DESC limit 1;",
       (err, rows) => {
         if (err) {
           throw err;
@@ -39,7 +39,7 @@ app.get("/realtime", (req, res) => {
 app.post("/historical", (req, res) => {
   if (connection) {
     connection.query(
-      "SELECT latitude,longitude,date FROM datatest WHERE date BETWEEN "+req.body.initialdate+" AND "+req.body.finaldate+";",
+      "SELECT latitude,longitude,date FROM gpsdata WHERE date BETWEEN "+req.body.initialdate+" AND "+req.body.finaldate+";",
       (err, rows) => {
         if (err) {
           throw err;
