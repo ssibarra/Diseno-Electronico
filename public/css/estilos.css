@@ -1,0 +1,144 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-image: url('../images/Blanco.jpg'); 
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
+
+}
+
+#contenido {
+	width: 100%;
+	height: 100vh;
+	background-color: rgba(255,255,255,0.3);
+}
+
+#contenido header {
+	height: 150px;
+	background-color: rgba(255,255,255,1);
+	/* background-image: url('../images/White.jpg'); */
+	opacity: 0.5;
+}
+
+#contenido header #imgpro img {
+	margin-top: -310px;
+	margin-left: -680px;
+	left: 50%;
+	top: 50%;
+	position: absolute;
+}
+
+#contenido .wrap{
+	width:  25%;
+	height: 77% ;
+	background-color: rgba(0,0,0,1);
+	margin-left:5px;
+}
+
+#contenido .wrap ul.tabs{
+	width: 100%;
+	background: #363636;
+	list-style: none;
+	display: flex;
+}
+
+ul.tabs li {
+	width: 50%
+}
+
+#contenido .wrap ul.tabs li a{
+	color: #fff;
+	text-decoration: none;
+	font-size: 16px;
+	display: block;
+	padding: 10px 0px;
+	text-align: center;
+}
+
+.active{
+	background:	#0984CC;
+}
+
+.secciones{
+	width: 100%;
+	background-image: url('../images/Blanco.jpg'); 
+}
+
+.secciones article{
+	padding: 1px;
+}
+
+
+
+#contenido  #map {
+	width: 1015px;
+	height: 100%px;
+	float: right;
+	margin-top: 0px;
+	margin-right: 0px;
+	background: rgba(0,0,0,0.6);
+}
+
+#contenido .wrap .secciones #tab1 #Actual  {
+	width: 300px;
+	height: 420px;
+	float: left;
+	margin-top: 22px;
+	margin-left:19px;
+	background: rgba(9,132,204,1);
+	text-align: center;
+}
+
+#contenido .wrap .secciones #tab2 section {
+	width: 1000px;
+	height: 420px;
+	float: right;
+	margin-top: 200px;
+	margin-right: 20px;
+	background: white;
+}
+
+#contenido .wrap .secciones #tab2 #HistorialFechaHora {
+	width: 250px;
+	height: 230px;
+	float: left;
+	margin-top: 150px;
+	margin-left: 45px;
+	background: rgba(9,132,204,1);
+	text-align: center;
+	line-height: 40px;
+	color: #fff;
+}
+
+
+#contenido .wrap .secciones #tab2 #tie {
+	width: 250px;
+	height: 50px;
+	float: left;
+	margin-top: 90px;
+	margin-left:-250px;
+	background: rgba(9,132,204,1);
+	text-align: center;
+	line-height: 40px;
+	color: #fff;
+	
+
+}
+
+#contenido .wrap .secciones #tab1 #Actual h1{
+	text-align: center;
+	color: #fff;
+	font-size: 25px;
+}
+
+#contenido .wrap .secciones #tab1 #Actual p{
+	text-align: center;
+	color: #fff;
+	font-size: 15px;
+}
+
