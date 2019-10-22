@@ -74,6 +74,7 @@ var activeTab;
 var lastmarker;
 var lastdate;
 var layerGroup = L.featureGroup().addTo(map);
+var checkdb = false;
 //Inicio de pagina
 $(document).ready(function(){
 	$('ul.tabs li a:first').addClass('active');
@@ -92,14 +93,14 @@ $(document).ready(function(){
 //La funcion que se carga apenas inicia la pagina
 function inicio(){
 	activeTab = '#tab1'
-	frealtime();
+	//frealtime();
 };
 //Lo que ocurre en el cambio de pestañas
 function prepare(activeTab){
 	if (activeTab == '#tab1') {
 		erase(layerGroup);
 		layerGroup = L.featureGroup().addTo(map);
-		frealtime();
+		//frealtime();
 	}else{
 		erase(layerGroup);
 		layerGroup = L.featureGroup().addTo(map);
@@ -181,12 +182,22 @@ function getDateTime() {
 		erase(layerGroup);
 		var initialdate = dtlinicio.substring(0,4).concat(dtlinicio.substring(5,7),dtlinicio.substring(8,10),dtlinicio.substring(11,13),dtlinicio.substring(14,16),"00");
 		var finaldate = dtlfinal.substring(0,4).concat(dtlfinal.substring(5,7),dtlfinal.substring(8,10),dtlfinal.substring(11,13),dtlfinal.substring(14,16),"00");
-		historical(initialdate,finaldate);
+		var senddb;
+		if (!checkdb) {
+			senddb = "gpsdata1";
+		} else {
+			senddb = "gpsdata2";
+		}
+		checkdb = !checkdb;
+		historical(senddb, initialdate,finaldate);
 	};
 };
 //Historicos
-function historical(initiald, finald) {
-	const senddate = {initialdate: initiald, finaldate: finald};
+function historical(senddb, initiald, finald) {
+	const senddate = {
+		database: senddb,
+		initialdate: initiald,
+		finaldate: finald};
 	const options = {
 		method: "POST",
 		headers: {
