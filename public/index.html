@@ -128,21 +128,62 @@ var activeTab;
 var lastmarker;
 var lastdate;
 var layerGroup = L.featureGroup().addTo(map);
+var car1 =0;
+var car2=0;
 //Inicio de pagina
-$(document).ready(function(){
-	$('ul.tabs li a:first').addClass('active');
-	$('.secciones article').hide(); /* Ocultamos a todos */
-	$('.secciones article:first').show();
-	inicio();
-	$('ul.tabs li a').click(function tabsclick(){    /* Cuando le undamos click a un enlace se va a ejecutar una funcion */
-		$('ul.tabs li a').removeClass('active');
-		$(this).addClass('active');
-		$('.secciones article').hide();          /* Cuando hagamos clik todas las secciones se ocultan */
-		activeTab = $(this).attr('href'); /* Cuando le undamos click va a traer el atributo del href */
-		prepare(activeTab);
-		$(activeTab).show();
+	$(document).ready(function(){
+		$('ul.tabs li a:first').addClass('active');
+		$('.secciones article').hide(); /* Ocultamos a todos */
+		$('.secciones article:first').show();
+		inicio();		
+    	$('ul.tabs li a').click(function tabsclick(){    /* Cuando le undamos click a un enlace se va a ejecutar una funcion */
+			$('ul.tabs li a').removeClass('active');
+			$(this).addClass('active');
+			$('.secciones article').hide();          /* Cuando hagamos clik todas las secciones se ocultan */
+			activeTab = $(this).attr('href'); /* Cuando le undamos click va a traer el atributo del href */
+			console.log(activeTab);
+			prepare(activeTab);
+			$(activeTab).show();
+		});
 	});
-});
+//Seleccionar Vehiculo
+	$(' input[type="checkbox"]').on('change', function checkcar(e){
+	    if (this.checked) {
+	    	if ($(e.currentTarget).val() == 1){
+	    		car1 = 1;
+	    		car2= car2;
+	    		frealtime1(activeTab);
+	    	}else if ($(e.currentTarget).val() == 2){
+	    		car2=1;
+	    		car1= car1;
+	    		frealtime2(activeTab);
+	    	}
+	    } else {
+	        if ($(e.currentTarget).val() == 1){
+	    		car1 = 0;
+	    		car2= car2;
+	    		erasecar1(layerGroup1);
+		    	document.getElementById("calendar1").innerHTML = "-";
+		        document.getElementById("clock1").innerHTML    = "-";
+		        document.getElementById("lati1").innerHTML     = "-";
+		        document.getElementById("long1").innerHTML     = "-";
+		        document.getElementById("rpm1").innerHTML      = "-";
+		        document.getElementById("speed1").innerHTML    = "-";
+	    	}else if ($(e.currentTarget).val() == 2){
+	    		car2=0;
+	    		car1= car1;
+	    		erasecar2(layerGroup2);
+	    		document.getElementById("calendar2").innerHTML = "-";
+		        document.getElementById("clock2").innerHTML    = "-";
+		        document.getElementById("lati2").innerHTML     = "-";
+		        document.getElementById("long2").innerHTML     = "-";
+		        document.getElementById("rpm2").innerHTML      = "-";
+		        document.getElementById("speed2").innerHTML    = "-";
+	    	}
+	    }
+	    console.log(car1);
+	    console.log(car2);
+	});
 //La funcion que se carga apenas inicia la pagina
 function inicio(){
 	activeTab = '#tab1'
