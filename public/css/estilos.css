@@ -19,49 +19,63 @@ body {
 }
 
 #contenido header {
-	height: 150px;
+	width: 25%;
+	margin-top: 0%;
+	height: 20%;
 	background-color: rgba(255,255,255,1);
 	/* background-image: url('../images/White.jpg'); */
 	opacity: 0.5;
 }
 
 #contenido header #imgpro img {
-	margin-top: -310px;
-	margin-left: -680px;
+	/*margin-top: -23%;
+	margin-left: -50%;
 	left: 50%;
-	top: 50%;
-	position: absolute;
+	top: 50%;*/
+	height: 100%;
+	width: 100%;
+	
+}
+
+#contenido .pestañas{
+	width:  25%;
+	height: 10% ;
+	margin-left:0.265%;
+	margin-top: 0.5%;
 }
 
 #contenido .wrap{
 	width:  25%;
-	height: 77% ;
-	background-color: rgba(0,0,0,1);
-	margin-left:5px;
+	height: 72% ;
+	margin-left:0.265%;
+	margin-top: -2%;
+	border-radius: 15px 15px 15px 15px;
 }
 
-#contenido .wrap ul.tabs{
+#contenido .pestañas ul.tabs{
 	width: 100%;
-	background: #363636;
+
 	list-style: none;
 	display: flex;
+	border-radius: 15px;
 }
 
 ul.tabs li {
 	width: 50%
 }
 
-#contenido .wrap ul.tabs li a{
-	color: #fff;
+#contenido .pestañas ul.tabs li a{
+	color: rgb(0,0,0);
 	text-decoration: none;
-	font-size: 16px;
+	font-size: 100%;
 	display: block;
-	padding: 10px 0px;
+	padding: 5% 0%;
 	text-align: center;
 }
 
 .active{
 	background:	#0984CC;
+	border-radius: 25px 25px 25px 25px;
 }
 
 .secciones{
@@ -70,75 +84,145 @@ ul.tabs li {
 }
 
 .secciones article{
-	padding: 1px;
+	padding: 2%;
 }
 
 
 
 #contenido  #map {
-	width: 1015px;
-	height: 100%px;
+	width: 74.5%;
+	height: 100%;
 	float: right;
-	margin-top: 0px;
-	margin-right: 0px;
+	margin-top: 0%;
+	margin-right: 0%;
 	background: rgba(0,0,0,0.6);
+
 }
 
 #contenido .wrap .secciones #tab1 #Actual  {
-	width: 300px;
-	height: 420px;
+	width: 95%;
+	height: 90%;
 	float: left;
-	margin-top: 22px;
-	margin-left:19px;
+	margin-top: 10%;
+	margin-left:2.5%;
 	background: rgba(9,132,204,1);
 	text-align: center;
+	border-radius: 15px;
 }
 
 #contenido .wrap .secciones #tab2 section {
-	width: 1000px;
-	height: 420px;
+	width: 100%;
+	height: 100%;
 	float: right;
-	margin-top: 200px;
-	margin-right: 20px;
+	margin-top: 0%;
+	margin-right: 0%;
 	background: white;
 }
 
 #contenido .wrap .secciones #tab2 #HistorialFechaHora {
-	width: 250px;
-	height: 230px;
+	width: 85%;
+	height: 80%;
 	float: left;
-	margin-top: 150px;
-	margin-left: 45px;
+	margin-top: 40%;
+	margin-left: 10%;
 	background: rgba(9,132,204,1);
 	text-align: center;
-	line-height: 40px;
+	line-height: 250%;
 	color: #fff;
+	border-radius: 15px;
 }
 
 
 #contenido .wrap .secciones #tab2 #tie {
-	width: 250px;
-	height: 50px;
+	width: 80%;
+	height: 30%;
 	float: left;
-	margin-top: 90px;
-	margin-left:-250px;
+	margin-top: -75%;
+	margin-left: 10%;
 	background: rgba(9,132,204,1);
 	text-align: center;
-	line-height: 40px;
+	line-height: 250%;
 	color: #fff;
 	
 
 }
 
-#contenido .wrap .secciones #tab1 #Actual h1{
-	text-align: center;
-	color: #fff;
-	font-size: 25px;
+#contenido .wrap .secciones #tab1 #Actual .informacion {
+	text-align: left;
+	padding: 2%;
+	width: 25%;
+	height: auto;
+	margin-left: 5%;
 }
 
-#contenido .wrap .secciones #tab1 #Actual p{
-	text-align: center;
+#contenido .wrap .secciones #tab1 #Actual .informacion h1{
 	color: #fff;
-	font-size: 15px;
+	font-size: 85%;
 }
 
+#contenido .wrap .secciones #tab1 #Actual .informacion h2{
+	color: #fff;
+	font-size: 85%;
+}
+
+#contenido .wrap .secciones #tab1 #Actual .automovil1 {
+    text-align: center; 
+    padding: 2%;
+    width: 25%;
+	height: auto;
+    margin-left: 30%;
+    margin-top: -106%;
+}
+
+#contenido .wrap .secciones #tab1 #Actual .automovil1 h1{
+	color: #fff;
+	font-size: 85%;
+}
+
+#contenido .wrap .secciones #tab1 #Actual .automovil1 p{
+	color: #fff;
+	font-size: 85%;
+}
+
+#contenido .wrap .secciones #tab1 #Actual .automovil2 {
+    text-align: center; 
+    padding: 2%;
+    width: 25%;
+    height: auto;
+    margin-left: 63%;
+    margin-top: -105.5%;
+}
+
+#contenido .wrap .secciones #tab1 #Actual .automovil2 h1{
+	color: #fff;
+	font-size: 85%;
+}
+
+#contenido .wrap .secciones #tab1 #Actual .automovil2 p{
+	color: #fff;
+	font-size: 85%;
+}
+
+#contenido .cars{
+	width:  25%;
+	height: 4.5% ;
+	float: left;
+	margin-top:-3.5%;
+	margin-left:0.265%;
+	background: rgba(256,256,256,1);
+	text-align: center;
+}
+
+#contenido .cars  {
+	padding: 0.5%
+}
+
+
+#contenido .cars  input {
+	height: 20px;
+	width: 20px;
+}
+
+#contenido .cars  label {
+	width: 80%;
+}
