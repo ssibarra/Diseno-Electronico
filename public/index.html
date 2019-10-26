@@ -62,34 +62,34 @@
 								<br/>
 								<h1>Car1</h1>
 								<br/>
-								<p id="calendar1">20/09/2020</p>
+								<p id="calendar1">-</p>
 								<br/>
-								<p id="clock1">16:43:05</p>
+								<p id="clock1">-</p>
 								<br/>
-								<p id="lati1">-074.8765</p>
+								<p id="lati1">-</p>
 								<br/>
-								<p id="long1">+10.9965</p>
+								<p id="long1">-</p>
 								<br/>
-								<p id="speed1">120</p>
+								<p id="speed1">-</p>
 								<br/>
-								<p id="rpm1">3333</p>
+								<p id="rpm1">-</p>
 								<br/>
 							</div>
 							<div class="automovil2">
 								<br/>
 								<h1>Car2</h1>
 								<br/>
-								<p id="calendar2">10/09/2020</p>
+								<p id="calendar2">-</p>
 								<br/>
-								<p id="clock2">16:43:05</p>
+								<p id="clock2">-</p>
 								<br/>
-								<p id="lati2">+10.9965</p>
+								<p id="lati2">-</p>
 								<br/>
-								<p id="long2">-074.8765</p>
+								<p id="long2">-</p>
 								<br/>
-								<p id="speed2">120</p>
+								<p id="speed2">-</p>
 								<br/>
-								<p id="rpm2">3333</p>
+								<p id="rpm2">-</p>
 								<br/>
 							</div>
 							
@@ -124,10 +124,11 @@
 	</body>
 </html>
 <script type="text/javascript">
-var activeTab;
-var lastmarker;
-var lastdate;
-var layerGroup = L.featureGroup().addTo(map);
+var activeTab
+var lastmarker1
+var lastmarker2
+var layerGroup1 = L.featureGroup().addTo(map);
+var layerGroup2 = L.featureGroup().addTo(map);
 var car1 =0;
 var car2=0;
 //Inicio de pagina
@@ -152,11 +153,11 @@ var car2=0;
 	    	if ($(e.currentTarget).val() == 1){
 	    		car1 = 1;
 	    		car2= car2;
-	    		frealtime1(activeTab);
+	    		frealtime(activeTab);
 	    	}else if ($(e.currentTarget).val() == 2){
 	    		car2=1;
 	    		car1= car1;
-	    		frealtime2(activeTab);
+	    		frealtime(activeTab);
 	    	}
 	    } else {
 	        if ($(e.currentTarget).val() == 1){
@@ -192,76 +193,186 @@ function inicio(){
 //Lo que ocurre en el cambio de pestañas
 function prepare(activeTab){
 	if (activeTab == '#tab1') {
-		erase(layerGroup);
-		layerGroup = L.featureGroup().addTo(map);
-		frealtime();
+		erase(layerGroup1,layerGroup2);
+		layerGroup1 = L.featureGroup().addTo(map);
+		layerGroup2 = L.featureGroup().addTo(map);
+		frealtime(activeTab);
 	}else{
-		erase(layerGroup);
-		layerGroup = L.featureGroup().addTo(map);
+		erase(layerGroup1,layerGroup2);
+		layerGroup1 = L.featureGroup().addTo(map);
+		layerGroup2 = L.featureGroup().addTo(map);
 	};
 }
+//Primer Punto
+function frealtime(activeTab) {
+	if (activeTab=='#tab1') {
+		if (car1 == 1) {
+			const sendcar = {
+			database: "gpsdata1"};
+			const options = {
+			method: "POST",
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(sendcar)
+			};
+			fetch("/realtime", options)
+			.then(function(res) { 
+		        return res.json();
+		    })
+		        .then(data1 => {
+		          lat1   = data1[0].latitude;
+		          lon1   = data1[0].longitude;
+		          date1  = data1[0].date;
+		          vel1   = date1[0].speed;
+		          rev1   = date1[0].rpm;
+		          const year1 = date1[0].concat(date1[1],date1[2],date1[3]);
+		          const month1 = date1[4].concat(date1[5]);
+		          const day1 = date1[6].concat(date1[7]);
+		          const hour1 = date1[8].concat(date1[9]);
+		          const min1 = date1[10].concat(date1[11]);
+		          const sec1 = date1[12].concat(date1[13]);
+		          document.getElementById("calendar1").innerHTML = "".concat(day1.concat("/",month1,"/",year1));
+		          document.getElementById("clock1").innerHTML    = "".concat(hour1.concat(":",min1,":",sec1));
+		          document.getElementById("lati1").innerHTML     = "".concat(lat1);
+		          document.getElementById("long1").innerHTML     = "".concat(lon1);
+		          document.getElementById("speed1").innerHTML    = "".concat(vel1);
+		          document.getElementById("rpm1").innerHTML      = "".concat(rev1);
+		          lastmarker1 = L.circle([lat1, lon1],{color:'blue', fillOpacity: 0.2, radius: 5}).addTo(map);
+		          lastmarker1.bindPopup("<b>Hello I'm in !</b><br> ["+ lat1 + "," + lon1 + "]<br> Date: " + year1 + "/" + month1 +"/" + day1+ "<br> Hour: "+ hour1 + ":" + min1 + ":" + sec1).openPopup();
+		          lastmarker1.addTo(layerGroup1);
+		        });
+		}
+		if (car2 == 1) {
+			const sendcar = {
+			database: "gpsdata2"};
+			const options = {
+			method: "POST",
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(sendcar)
+			};
+			fetch("/realtime", options)
+			.then(function(res) {
+			return res.json();
+			})
+			.then(data2 => {
+		          lat2 = data2[0].latitude;
+		          lon2 = data2[0].longitude;
+		          date2 = data2[0].date;
+		          const year2 = date2[0].concat(date2[1],date2[2],date2[3]);
+		          const month2 = date2[4].concat(date2[5]);
+		          const day2 = date2[6].concat(date2[7]);
+		          const hour2 = date2[8].concat(date2[9]);
+		          const min2 = date2[10].concat(date2[11]);
+		          const sec2 = date2[12].concat(date2[13]);
+		          document.getElementById("calendar2").innerHTML = "".concat(day2.concat("/",month2,"/",year2));
+		          document.getElementById("clock2").innerHTML    = "".concat(hour2.concat(":",min2,":",sec2));
+		          document.getElementById("lati2").innerHTML     = "".concat(lat2);
+		          document.getElementById("long2").innerHTML     = "".concat(lon2);
+		          document.getElementById("rpm2").innerHTML      = "-";
+		       	  document.getElementById("speed2").innerHTML    = "-";
+		          lastmarker2 = L.circle([lat2, lon2],{color:'red', fillOpacity: 0.9, radius: 5}).addTo(map);
+		          lastmarker2.bindPopup("<b>Hello I'm in !</b><br> ["+ lat2 + "," + lon2 + "]<br> Date: " + year2 + "/" + month2 +"/" + day2+ "<br> Hour: "+ hour2 + ":" + min2 + ":" + sec2).openPopup();
+		          lastmarker2.addTo(layerGroup2);
+		    });
+		}
+		setTimeout(realtime, 2000);
+		realtime(activeTab);
+		realtime();
+	};
+}
+// 
 function realtime() {
 	if (activeTab=='#tab1') {
-		fetch("/realtime")
-		.then(function(res) {
+		if (car1 == 1) {
+			console.log('RealTime SI ENTRA CAR1')
+			const sendcar = {
+			database: "gpsdata1"};
+			const options = {
+			method: "POST",
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(sendcar)
+			};
+			fetch("/realtime", options)
+			.then(function(res) { 
+		        return res.json();
+		    })
+		        .then(data1 => {
+		          lat1   = data1[0].latitude;
+		          lon1   = data1[0].longitude;
+		          date1  = data1[0].date;
+		          vel1   = date1[0].speed;
+		          rev1   = date1[0].rpm;
+		          const year1 = date1[0].concat(date1[1],date1[2],date1[3]);
+		          const month1 = date1[4].concat(date1[5]);
+		          const day1 = date1[6].concat(date1[7]);
+		          const hour1 = date1[8].concat(date1[9]);
+		          const min1 = date1[10].concat(date1[11]);
+		          const sec1 = date1[12].concat(date1[13]);
+		          document.getElementById("calendar1").innerHTML = "".concat(day1.concat("/",month1,"/",year1));
+		          document.getElementById("clock1").innerHTML    = "".concat(hour1.concat(":",min1,":",sec1));
+		          document.getElementById("lati1").innerHTML     = "".concat(lat1);
+		          document.getElementById("long1").innerHTML     = "".concat(lon1);
+		          document.getElementById("speed1").innerHTML    = "".concat(vel1);
+		          document.getElementById("rpm1").innerHTML      = "".concat(rev1);
+		          var punto1 = L.circle([lat1, lon1],{color:'blue', fillOpacity: 0.1, radius: 5}).addTo(map);
+		          punto1.bindPopup("<b>Hello I'm in !</b><br> ["+ lat1 + "," + lon1 + "]<br> Date: " + year1 + "/" + month1 +"/" + day1+ "<br> Hour: "+ hour1 + ":" + min1 + ":" + sec1 + "<br> Speed: " + vel1 + "<br> RPM: " + rev1).openPopup();
+		          var latlongs1 = Array();
+		          latlongs1.push(lastmarker1.getLatLng());
+		          latlongs1.push(punto1.getLatLng());
+				  var poly1 = L.polyline(latlongs1).addTo(map);
+		          punto1.addTo(layerGroup1); 
+		          lastmarker1 = punto1;
+		          poly1.addTo(layerGroup1);
+		        });
+		}
+		if (car2 == 1) {
+			console.log('RealTime SI ENTRA CAR2')
+			const sendcar = {
+			database: "gpsdata2"};
+			const options = {
+			method: "POST",
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(sendcar)
+			};
+			fetch("/realtime", options)
+			.then(function(res) {
 			return res.json();
-		})
-		.then(data => {
-			lat = data[0].latitude;
-			lon = data[0].longitude;
-			date = data[0].date;
-			if (lastdate != date) {
-				lastdate = date;
-				const year = date.substring(0,4);
-				const month = date.substring(4,6);
-				const day = date.substring(6,8);
-				const hour = date.substring(8,10);
-				const min = date.substring(10,12);
-				const sec = date.substring(12,14);
-				document.getElementById("calendar").innerHTML = "<b>Day:</b><br>".concat(day.concat("/",month,"/",year));
-				document.getElementById("clock").innerHTML = "<b>Hour:</b><br>".concat(hour.concat(":",min,":",sec));
-				document.getElementById("lati").innerHTML = "<b>Latitude:</b> <br>".concat(lat);
-				document.getElementById("long").innerHTML = "<b>Longitude:</b> <br>".concat(lon);
-				var punto = L.marker([lat, lon]).addTo(map);
-				punto.bindPopup("<b>Hello I'm in !</b><br> ["+ lat + "," + lon + "]<br> Date: " + day + "/" + month +"/" + year + "<br> Hour: "+ hour + ":" + min + ":" + sec).openPopup();
-				var latlongs = Array();
-				latlongs.push(lastmarker.getLatLng());
-				latlongs.push(punto.getLatLng());
-				var poly = L.polyline(latlongs).addTo(map);
-				punto.addTo(layerGroup);
-				lastmarker = punto;
-				poly.addTo(layerGroup);
-			}
-			setTimeout(realtime, 1000);
-		});
-	};
-}
-function frealtime() {
-	if (activeTab=='#tab1') {
-		fetch("/realtime")
-		.then(function(res) {
-			return res.json();
-		})
-		.then(data => {
-			lat = data[0].latitude;
-			lon = data[0].longitude;
-			date = data[0].date;
-			lastdate = date;
-			const year = date.substring(0,4);
-			const month = date.substring(4,6);
-			const day = date.substring(6,8);
-			const hour = date.substring(8,10);
-			const min = date.substring(10,12);
-			const sec = date.substring(12,14);
-			document.getElementById("calendar").innerHTML = "<b>Day:</b><br>".concat(day.concat("/",month,"/",year));
-			document.getElementById("clock").innerHTML = "<b>Hour:</b><br>".concat(hour.concat(":",min,":",sec));
-			document.getElementById("lati").innerHTML = "<b>Latitude:</b> <br>".concat(lat);
-			document.getElementById("long").innerHTML = "<b>Longitude:</b> <br>".concat(lon);
-			lastmarker = L.marker([lat, lon]).addTo(map);
-			lastmarker.bindPopup("<b>Hello I'm in !</b><br> ["+ lat + "," + lon + "]<br> Date: " + day + "/" + month +"/" + year + "<br> Hour: "+ hour + ":" + min + ":" + sec).openPopup();
-			lastmarker.addTo(layerGroup);
-			setTimeout(realtime, 1000);
-		});
+			})
+			.then(data2 => {
+		          lat2 = data2[0].latitude;
+		          lon2 = data2[0].longitude;
+		          date2 = data2[0].date;
+		          const year2 = date2[0].concat(date2[1],date2[2],date2[3]);
+		          const month2 = date2[4].concat(date2[5]);
+		          const day2 = date2[6].concat(date2[7]);
+		          const hour2 = date2[8].concat(date2[9]);
+		          const min2 = date2[10].concat(date2[11]);
+		          const sec2 = date2[12].concat(date2[13]);
+		          document.getElementById("calendar2").innerHTML = "".concat(day2.concat("/",month2,"/",year2));
+		          document.getElementById("clock2").innerHTML    = "".concat(hour2.concat(":",min2,":",sec2));
+		          document.getElementById("lati2").innerHTML     = "".concat(lat2);
+		          document.getElementById("long2").innerHTML     = "".concat(lon2);
+		          document.getElementById("rpm2").innerHTML      = "-";
+		       	  document.getElementById("speed2").innerHTML    = "-";
+		          var punto2 = L.circle([lat2, lon2],{color:'red', fillOpacity: 0.9, radius: 5}).addTo(map);
+		          punto2.bindPopup("<b>Hello I'm in !</b><br> ["+ lat2 + "," + lon2 + "]<br> Date: " + year2 + "/" + month2 +"/" + day2+ "<br> Hour: "+ hour2 + ":" + min2 + ":" + sec2).openPopup();
+		          var latlongs2 = Array();
+		          latlongs2.push(lastmarker2.getLatLng());
+		          latlongs2.push(punto2.getLatLng());
+				  var poly2 = L.polyline(latlongs2,{color: 'red'}).addTo(map);
+		          punto2.addTo(layerGroup2);
+		          lastmarker2 = punto2;
+		          poly2.addTo(layerGroup2);
+		    });
+		}
+		setTimeout(realtime, 2000);
 	};
 }
 //Obtener la info del formulario
@@ -273,72 +384,138 @@ function getDateTime() {
 		alert('Dear user, please type the form correctly');
 	} else {
 		// Fragmentación de datos
-		erase(layerGroup);
 		var initialdate = dtlinicio.substring(0,4).concat(dtlinicio.substring(5,7),dtlinicio.substring(8,10),dtlinicio.substring(11,13),dtlinicio.substring(14,16),"00");
 		var finaldate = dtlfinal.substring(0,4).concat(dtlfinal.substring(5,7),dtlfinal.substring(8,10),dtlfinal.substring(11,13),dtlfinal.substring(14,16),"00");
 		historical(initialdate,finaldate);
 	};
 };
 //Historicos
-function historical(initiald, finald) {
-	const senddate = {initialdate: initiald, finaldate: finald};
-	const options = {
-		method: "POST",
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(senddate)
-	};
-	fetch("/historical", options)
-	.then(function(res) {
+function historical(initialdate, finaldate) {
+	if (car1 == 1) {
+		console.log('historical SI ENTRA CAR1')
+		const senddate = {
+			database: "gpsdata1",
+			initialdate: initialdate,
+			finaldate: finaldate};
+		const options = {
+			method: "POST",
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(senddate)
+		};
+		fetch("/historical", options)
+		.then(function(res) {
 		return res.json();
-	})
-	.then(data => {
-		if (data.length > 0) {
-			lat = data[0].latitude;
-			lon = data[0].longitude;
-			date = data[0].date;
-			var year = date.substring(0,4);
-			var month = date.substring(4,6);
-			var day = date.substring(6,8);
-			var hour = date.substring(8,10);
-			var min = date.substring(10,12);
-			var sec = date.substring(12,14);
-			var lasthistorical = L.marker([lat, lon]).addTo(map);
-			lasthistorical.bindPopup("<b>Hello I'm in !</b><br> ["+ lat + "," + lon + "]<br> Date: " + day + "/" + month +"/" + year + "<br> Hour: "+ hour + ":" + min + ":" + sec).openPopup();
-			lasthistorical.addTo(layerGroup);
-			if (data.length > 1) {
-				var punto;
-				var latlongs;
-				var poly;
-				for (i=1; i < data.length;i++){
-					lat = data[i].latitude;
-					lon = data[i].longitude;
-					date = data[i].date;
-					year = date.substring(0,4);
-					month = date.substring(4,6);
-					day = date.substring(6,8);
-					hour = date.substring(8,10);
-					min = date.substring(10,12);
-					sec = date.substring(12,14);
-					punto = L.marker([lat, lon]).addTo(map);
-					punto.bindPopup("<b>Hello I'm in !</b><br> ["+ lat + "," + lon + "]<br> Date: " + day + "/" + month + "/" + year + "<br> Hour: "+ hour + ":" + min + ":" + sec).openPopup();
-					latlongs = Array();
-					latlongs.push(lasthistorical.getLatLng());
-					latlongs.push(punto.getLatLng());
-					poly = L.polyline(latlongs).addTo(map);
-					punto.addTo(layerGroup);
-					lasthistorical = punto;
-					poly.addTo(layerGroup);
+		})
+		.then(data1 => {
+			if (data1.length > 0) {
+				lat1   = data1[0].latitude;
+		        lon1   = data1[0].longitude;
+		        date1  = data1[0].date;
+		        vel1   = date1[0].speed;
+		        rev1   = date1[0].rpm;
+		        var year1  = date1[0].concat(date1[1],date1[2],date1[3]);
+		        var month1 = date1[4].concat(date1[5]);
+		        var day1   = date1[6].concat(date1[7]);
+		        var hour1  = date1[8].concat(date1[9]);
+		        var min1   = date1[10].concat(date1[11]);
+		        var sec1   = date1[12].concat(date1[13]);
+	          	lasthistorical1 = L.circle([data1[0].latitude, data1[0].longitude],{color:'blue', fillOpacity: 0.5, radius: 50}).addTo(map);
+		        lasthistorical1.addTo(layerGroup1);
+	          	for (i=1;data1.length;i++){
+	          	  	lat1   = data1[i].latitude;
+		          	lon1   = data1[i].longitude;
+		            date1  = data1[i].date;
+		            vel1   = date1[0].speed;
+		            rev1   = date1[0].rpm;
+		            var year1  = date1[0].concat(date1[1],date1[2],date1[3]);
+		            var month1 = date1[4].concat(date1[5]);
+		            var day1   = date1[6].concat(date1[7]);
+		            var hour1  = date1[8].concat(date1[9]);
+		            var min1   = date1[10].concat(date1[11]);
+		            var sec1   = date1[12].concat(date1[13]);
+		            var punto1 = L.circle([lat1, lon1],{color:'blue', fillOpacity: 0.5, radius: 50}).addTo(map);
+		            punto1.bindPopup("<b>Hello I'm in !</b><br> ["+ lat1 + "," + lon1 + "]<br> Date: " + year1 + "/" + month1 +"/" + day1+ "<br> Hour: "+ hour1 + ":" + min1 + ":" + sec1 + "<br> Speed: " + vel1 + "<br> RPM: " + rev1).openPopup();
+		            var latlongs1 = Array();
+		            latlongs1.push(lasthistorical1.getLatLng());
+		            latlongs1.push(punto1.getLatLng());
+				    var poly1 = L.polyline(latlongs1).addTo(map);
+		            punto1.addTo(layerGroup1);
+		            lasthistorical1 = punto1;
+		            poly1.addTo(layerGroup1);
 				}
 			}
-		}else {
-			alert('No data between those dates');
-		}
-	});
+		});
+	}
+	if (car2 == 1) {
+		console.log('historical SI ENTRA CAR1')
+		const senddate = {
+			database: "gpsdata2",
+			initialdate: initialdate,
+			finaldate: finaldate};
+		const options = {
+			method: "POST",
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(senddate)
+		};
+		fetch("/historical", options)
+		.then(function(res) {
+		return res.json();
+		})
+		.then(data2 => {
+			if (data2.length > 0) {
+	      	 	lat2 = data2[0].latitude;
+		        lon2 = data2[0].longitude;
+		        date2 = data2[0].date;
+		        var year2 = date2[0].concat(date2[1],date2[2],date2[3]);
+		        var month2 = date2[4].concat(date2[5]);
+		        var day2 = date2[6].concat(date2[7]);
+		        var hour2 = date2[8].concat(date2[9]);
+		        var min2 = date2[10].concat(date2[11]);
+		        var sec2 = date2[12].concat(date2[13]);
+	          	lasthistorical2 = L.circle([data2[0].latitude, data2[0].longitude],{color:'red', fillOpacity: 0.5, radius: 50}).addTo(map);
+		        lasthistorical2.addTo(layerGroup2);
+	          	for (i=1;data2.length;i++){
+	          	  	lat2 = data2[i].latitude;
+		          	lon2 = data2[i].longitude;
+		            date2 = data2[i].date;
+		            var year2 = date2[0].concat(date2[1],date2[2],date2[3]);
+		            var month2 = date2[4].concat(date2[5]);
+		            var day2 = date2[6].concat(date2[7]);
+		            var hour2 = date2[8].concat(date2[9]);
+		            var min2 = date2[10].concat(date2[11]);
+		            var sec2 = date2[12].concat(date2[13]);
+		            var punto2 = L.circle([lat2, lon2],{color:'red', fillOpacity: 0.5, radius: 50}).addTo(map);
+		            punto2.bindPopup("<b>Hello I'm in !</b><br> ["+ lat2 + "," + lon2 + "]<br> Date: " + year2 + "/" + month2 +"/" + day2+ "<br> Hour: "+ hour2 + ":" + min2 + ":" + sec2).openPopup();
+		            var latlongs2 = Array();
+		            latlongs2.push(lasthistorical2.getLatLng());
+		            latlongs2.push(punto2.getLatLng());
+				    var poly2 = L.polyline(latlongs2,{color: 'red'}).addTo(map);
+		            punto2.addTo(layerGroup2);
+		            lasthistorical2 = punto2;
+		            poly2.addTo(layerGroup2);
+	          	}
+	        }
+	    })
+	}
+	else {
+		alert('No data between those dates');
+	}
 }
-//Borrar data
-function erase(layerGroup){
-	layerGroup.clearLayers();
-}
+//Borrar data Tabs
+	function erase(layerGroup1,layerGroup2){
+		layerGroup1.clearLayers();
+		layerGroup2.clearLayers();
+	}
+//Borrar Data Carro 1
+	function erasecar1(layerGroup1){
+		layerGroup1.clearLayers();
+	}
+//Borrar Data Carro2
+	function erasecar2(layerGroup2){
+		layerGroup2.clearLayers();
+	}
 </script>
