@@ -93,14 +93,14 @@ $(document).ready(function(){
 //La funcion que se carga apenas inicia la pagina
 function inicio(){
 	activeTab = '#tab1'
-	//frealtime();
+	frealtime();
 };
 //Lo que ocurre en el cambio de pestañas
 function prepare(activeTab){
 	if (activeTab == '#tab1') {
 		erase(layerGroup);
 		layerGroup = L.featureGroup().addTo(map);
-		//frealtime();
+		frealtime();
 	}else{
 		erase(layerGroup);
 		layerGroup = L.featureGroup().addTo(map);

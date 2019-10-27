@@ -18,8 +18,8 @@ print("Database version : {0}".format(data))
 
 def main():
 
-    IP = '172.31.31.63'
-    PORT = 5000
+    IP = '192.168.1.65'
+    PORT = 6000
     # Creating the socket to lisent UDP packets
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.bind((IP, PORT))  # Config the IP and PORT
@@ -35,17 +35,20 @@ def main():
         lon = tot_data[29:33] + "." + tot_data[33:37]
         rpm = tot_data[37:41]
         vel = tot_data[41:]
-        send = "INSERT INTO `gpsdata`(`id`, `latitude`, `longitude`, `date`, 'rpm', 'speed') VALUES (%s, DEFAULT, %s, %s, %s, %s, %s);"
+        if (db == 'gpsdata1'):
+            send = "INSERT INTO `gpsdata1` (`id`, `latitude`, `longitude`, `date`, `rpm`, `speed`) VALUES (DEFAULT, %s, %s, %s, %s, %s);"
+        elif (db == 'gpsdata2'):
+            send = "INSERT INTO `gpsdata2` (`id`, `latitude`, `longitude`, `date`, `rpm`, `speed`) VALUES (DEFAULT, %s, %s, %s, %s, %s);"
 
         try:
-            cursor.execute(send, (db, lat, lon, realtime, rpm, vel))
+            cursor.execute(send, (lat, lon, realtime, rpm, vel))
             # Commit your changes in the database
             connection.commit()
-            print("Sent " + realtime)
+            print("Sent to " + db)
         except:
             # Rollback in case there is any error
             connection.rollback()
-            print("Error" + realtime)
+            print("Error sending to " + db)
 
 
 main()
