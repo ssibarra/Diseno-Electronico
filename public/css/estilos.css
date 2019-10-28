@@ -143,75 +143,21 @@ ul.tabs li {
 	text-align: center;
 	line-height: 250%;
 	color: #fff;
-	
-
 }
 
-#contenido .wrap .secciones #tab1 #Actual .informacion {
+#contenido .wrap .secciones #tab1 #Actual .egt {
 	text-align: left;
-	padding: 2%;
-	width: 25%;
-	height: auto;
-	margin-left: 5%;
-}
-
-#contenido .wrap .secciones #tab1 #Actual .informacion h1{
-	color: #fff;
-	font-size: 85%;
-}
-
-#contenido .wrap .secciones #tab1 #Actual .informacion h2{
-	color: #fff;
-	font-size: 85%;
-}
-
-#contenido .wrap .secciones #tab1 #Actual .automovil1 {
-    text-align: center; 
-    padding: 2%;
-    width: 25%;
-	height: auto;
-    margin-left: 30%;
-    margin-top: -106%;
-}
-
-#contenido .wrap .secciones #tab1 #Actual .automovil1 h1{
-	color: #fff;
-	font-size: 85%;
-}
-
-#contenido .wrap .secciones #tab1 #Actual .automovil1 p{
-	color: #fff;
-	font-size: 85%;
-}
-
-#contenido .wrap .secciones #tab1 #Actual .automovil2 {
-    text-align: center; 
-    padding: 2%;
-    width: 25%;
-    height: auto;
-    margin-left: 63%;
-    margin-top: -105.5%;
-}
-
-#contenido .wrap .secciones #tab1 #Actual .automovil2 h1{
-	color: #fff;
-	font-size: 85%;
-}
-
-#contenido .wrap .secciones #tab1 #Actual .automovil2 p{
-	color: #fff;
-	font-size: 85%;
-}
-
-#contenido .cars{
-	width:  25%;
-	height: 4.5% ;
+	color: white;
 	float: left;
-	margin-top:-3.5%;
-	margin-left:0.265%;
-	background: rgba(256,256,256,1);
-	text-align: center;
+	margin-left: 5%;
+	margin-top: 5%;
+	margin-bottom: 5%;
+	font-size: 90%;
 }
+#contenido .wrap .secciones #tab1 #Actual td {
+padding: 2%;
+}
+
 
 #contenido .cars  {
 	padding: 0.5%
