@@ -168,10 +168,12 @@ var car2=0;
 	    	if ($(e.currentTarget).val() == 1){
 	    		car1 = 1;
 	    		car2= car2;
+	    		poly1.addTo(layerGroup1);
 	    		frealtime(activeTab);
 	    	}else if ($(e.currentTarget).val() == 2){
 	    		car2=1;
 	    		car1= car1;
+	    		poly2.addTo(layerGroup2);
 	    		frealtime(activeTab);
 	    	}
 	    } else {
