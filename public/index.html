@@ -41,58 +41,73 @@
 				<div class="secciones">
 					<article id="tab1">
 						<aside id="Actual">
-							<div class="informacion">
-								<br/>
-								<h1>Type</h1>
-								<br/>
-								<h2>Day:</h2>
-								<br/>
-								<h2>Hour:</h2>
-								<br/>
-								<h2>Latitude:</h2>
-								<br/>
-								<h2>Longitude:</h2>
-								<br/>
-								<h2>Speed:</h2>
-								<br/>
-								<h2>RPM:</h2>
-								<br/>
-							</div>
-							<div class="automovil1">
-								<br/>
-								<h1>Car1</h1>
-								<br/>
-								<p id="calendar1">-</p>
-								<br/>
-								<p id="clock1">-</p>
-								<br/>
-								<p id="lati1">-</p>
-								<br/>
-								<p id="long1">-</p>
-								<br/>
-								<p id="speed1">-</p>
-								<br/>
-								<p id="rpm1">-</p>
-								<br/>
-							</div>
-							<div class="automovil2">
-								<br/>
-								<h1>Car2</h1>
-								<br/>
-								<p id="calendar2">-</p>
-								<br/>
-								<p id="clock2">-</p>
-								<br/>
-								<p id="lati2">-</p>
-								<br/>
-								<p id="long2">-</p>
-								<br/>
-								<p id="speed2">-</p>
-								<br/>
-								<p id="rpm2">-</p>
-								<br/>
-							</div>
-							
+							<table class="egt">
+							  	<tr>
+							    	<th >Type</th>
+							    	<th>Car1</th>
+							    	<th>Car2</th>
+							  	</tr>
+							  	<tr>
+							    	<th><br></th>
+							    	<th><br></th>
+							    	<th><br></th>
+							  	</tr>
+							  	<tr>
+							    	<th>Day</th>
+							    	<td id="calendar1">-</td>
+							    	<td id="calendar2">-</td>
+							  	</tr>
+							  	<tr>
+							    	<th><br></th>
+							    	<th><br></th>
+							    	<th><br></th>
+							  	</tr>
+							  	<tr>
+							    	<th>Hour</th>
+							    	<td id="clock1">-</td>
+							    	<td id="clock2">-</td>
+							 	</tr>
+							 	<tr>
+							    	<th><br></th>
+							    	<th><br></th>
+							    	<th><br></th>
+							  	</tr>
+							 	<tr>
+							    	<th>Latitude</th>
+							    	<td id="lati1">-</td>
+							    	<td id="lati2">-</td>
+							 	</tr>
+							 	<tr>
+							    	<th><br></th>
+							    	<th><br></th>
+							    	<th><br></th>
+							  	</tr>
+							 	<tr>
+							    	<th>Longitude</th>
+							    	<td id="long1">-</td>
+							    	<td id="long2">-</td>
+							 	</tr>
+							 	<tr>
+							    	<th><br></th>
+							    	<th><br></th>
+							    	<th><br></th>
+							  	</tr>
+							 	<tr>
+							    	<th>Speed</th>
+							    	<td id="speed1">-</td>
+							    	<td id="speed2">-</td>
+							 	</tr>
+							 	<tr>
+							    	<th><br></th>
+							    	<th><br></th>
+							    	<th><br></th>
+							  	</tr>
+							 	<tr>
+							    	<th>RPM</th>
+							    	<td id="rpm1">-</td>
+							    	<td id="rpm2">-</td>
+							 	</tr>
+							</table>
 						</aside>
 					</article>
 					<article id="tab2">
@@ -450,7 +465,7 @@ function historical(initialdate, finaldate) {
 			}
 		});
 	}
-	else { if (car2 == 1) {
+	if (car2 == 1) {
 		console.log('historical SI ENTRA CAR2')
 		const senddate = {
 			database: "gpsdata2",
@@ -506,7 +521,6 @@ function historical(initialdate, finaldate) {
 	else {
 		alert('No data between those dates');
 	}
-}
 }
 //Borrar data Tabs
 	function erase(layerGroup1,layerGroup2){
