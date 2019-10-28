@@ -239,7 +239,7 @@ function frealtime(activeTab) {
 		          document.getElementById("speed1").innerHTML    = "".concat(vel1);
 		          document.getElementById("rpm1").innerHTML      = "".concat(rev1);
 		          lastmarker1 = L.circle([lat1, lon1],{color:'blue', fillOpacity: 0.2, radius: 5}).addTo(map);
-		          lastmarker1.bindPopup("<b>Hello I'm in !</b><br> ["+ lat1 + "," + lon1 + "]<br> Date: " + year1 + "/" + month1 +"/" + day1+ "<br> Hour: "+ hour1 + ":" + min1 + ":" + sec1).openPopup();
+		          //lastmarker1.bindPopup("<b>Hello I'm in !</b><br> ["+ lat1 + "," + lon1 + "]<br> Date: " + year1 + "/" + month1 +"/" + day1+ "<br> Hour: "+ hour1 + ":" + min1 + ":" + sec1).openPopup();
 		          lastmarker1.addTo(layerGroup1);
 		        });
 		}
@@ -261,6 +261,8 @@ function frealtime(activeTab) {
 		          lat2 = data2[0].latitude;
 		          lon2 = data2[0].longitude;
 		          date2 = data2[0].date;
+				  vel2   = data2[0].speed;
+		          rev2   = data2[0].rpm;
 		          const year2 = date2[0].concat(date2[1],date2[2],date2[3]);
 		          const month2 = date2[4].concat(date2[5]);
 		          const day2 = date2[6].concat(date2[7]);
@@ -271,14 +273,14 @@ function frealtime(activeTab) {
 		          document.getElementById("clock2").innerHTML    = "".concat(hour2.concat(":",min2,":",sec2));
 		          document.getElementById("lati2").innerHTML     = "".concat(lat2);
 		          document.getElementById("long2").innerHTML     = "".concat(lon2);
-		          document.getElementById("rpm2").innerHTML      = "-";
-		       	  document.getElementById("speed2").innerHTML    = "-";
+		          document.getElementById("rpm2").innerHTML      = "".concat(vel2);
+		       	  document.getElementById("speed2").innerHTML    = "".concat(rpm2);
 		          lastmarker2 = L.circle([lat2, lon2],{color:'red', fillOpacity: 0.9, radius: 5}).addTo(map);
-		          lastmarker2.bindPopup("<b>Hello I'm in !</b><br> ["+ lat2 + "," + lon2 + "]<br> Date: " + year2 + "/" + month2 +"/" + day2+ "<br> Hour: "+ hour2 + ":" + min2 + ":" + sec2).openPopup();
+		          // lastmarker2.bindPopup("<b>Hello I'm in !</b><br> ["+ lat2 + "," + lon2 + "]<br> Date: " + year2 + "/" + month2 +"/" + day2+ "<br> Hour: "+ hour2 + ":" + min2 + ":" + sec2).openPopup();
 		          lastmarker2.addTo(layerGroup2);
 		    });
 		}
-		setTimeout(realtime, 2000);
+		setTimeout(realtime, 10000);
 		realtime(activeTab);
 		realtime();
 	};
@@ -320,7 +322,7 @@ function realtime() {
 		          document.getElementById("speed1").innerHTML    = "".concat(vel1);
 		          document.getElementById("rpm1").innerHTML      = "".concat(rev1);
 		          var punto1 = L.circle([lat1, lon1],{color:'blue', fillOpacity: 0.1, radius: 5}).addTo(map);
-		          punto1.bindPopup("<b>Hello I'm in !</b><br> ["+ lat1 + "," + lon1 + "]<br> Date: " + year1 + "/" + month1 +"/" + day1+ "<br> Hour: "+ hour1 + ":" + min1 + ":" + sec1 + "<br> Speed: " + vel1 + "<br> RPM: " + rev1).openPopup();
+		          // punto1.bindPopup("<b>Hello I'm in !</b><br> ["+ lat1 + "," + lon1 + "]<br> Date: " + year1 + "/" + month1 +"/" + day1+ "<br> Hour: "+ hour1 + ":" + min1 + ":" + sec1 + "<br> Speed: " + vel1 + "<br> RPM: " + rev1).openPopup();
 		          var latlongs1 = Array();
 		          latlongs1.push(lastmarker1.getLatLng());
 		          latlongs1.push(punto1.getLatLng());
@@ -362,7 +364,7 @@ function realtime() {
 		          document.getElementById("rpm2").innerHTML      = "-";
 		       	  document.getElementById("speed2").innerHTML    = "-";
 		          var punto2 = L.circle([lat2, lon2],{color:'red', fillOpacity: 0.9, radius: 5}).addTo(map);
-		          punto2.bindPopup("<b>Hello I'm in !</b><br> ["+ lat2 + "," + lon2 + "]<br> Date: " + year2 + "/" + month2 +"/" + day2+ "<br> Hour: "+ hour2 + ":" + min2 + ":" + sec2).openPopup();
+		          // punto2.bindPopup("<b>Hello I'm in !</b><br> ["+ lat2 + "," + lon2 + "]<br> Date: " + year2 + "/" + month2 +"/" + day2+ "<br> Hour: "+ hour2 + ":" + min2 + ":" + sec2).openPopup();
 		          var latlongs2 = Array();
 		          latlongs2.push(lastmarker2.getLatLng());
 		          latlongs2.push(punto2.getLatLng());
@@ -372,7 +374,7 @@ function realtime() {
 		          poly2.addTo(layerGroup2);
 		    });
 		}
-		setTimeout(realtime, 2000);
+		setTimeout(realtime, 10000);
 	};
 }
 //Obtener la info del formulario
@@ -448,8 +450,8 @@ function historical(initialdate, finaldate) {
 			}
 		});
 	}
-	if (car2 == 1) {
-		console.log('historical SI ENTRA CAR1')
+	else { if (car2 == 1) {
+		console.log('historical SI ENTRA CAR2')
 		const senddate = {
 			database: "gpsdata2",
 			initialdate: initialdate,
@@ -500,10 +502,11 @@ function historical(initialdate, finaldate) {
 	          	}
 	        }
 	    })
-	}
+	} 
 	else {
 		alert('No data between those dates');
 	}
+}
 }
 //Borrar data Tabs
 	function erase(layerGroup1,layerGroup2){
