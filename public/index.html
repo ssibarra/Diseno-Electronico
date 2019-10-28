@@ -146,8 +146,6 @@ var layerGroup1 = L.featureGroup().addTo(map);
 var layerGroup2 = L.featureGroup().addTo(map);
 var car1 =0;
 var car2=0;
-var poly1
-var poly2
 //Inicio de pagina
 	$(document).ready(function(){
 		$('ul.tabs li a:first').addClass('active');
@@ -170,12 +168,10 @@ var poly2
 	    	if ($(e.currentTarget).val() == 1){
 	    		car1 = 1;
 	    		car2= car2;
-	    		poly1.addTo(layerGroup1);
 	    		frealtime(activeTab);
 	    	}else if ($(e.currentTarget).val() == 2){
 	    		car2=1;
 	    		car1= car1;
-	    		poly2.addTo(layerGroup2);
 	    		frealtime(activeTab);
 	    	}
 	    } else {
@@ -308,6 +304,7 @@ function frealtime(activeTab) {
 function realtime() {
 	if (activeTab=='#tab1') {
 		if (car1 == 1) {
+			console.log('RealTime SI ENTRA CAR1')
 			const sendcar = {
 			database: "gpsdata1"};
 			const options = {
@@ -351,6 +348,7 @@ function realtime() {
 		        });
 		}
 		if (car2 == 1) {
+			console.log('RealTime SI ENTRA CAR2')
 			const sendcar = {
 			database: "gpsdata2"};
 			const options = {
@@ -411,6 +409,7 @@ function getDateTime() {
 //Historicos
 function historical(initialdate, finaldate) {
 	if (car1 == 1) {
+		console.log('historical SI ENTRA CAR1')
 		const senddate = {
 			database: "gpsdata1",
 			initialdate: initialdate,
@@ -445,8 +444,8 @@ function historical(initialdate, finaldate) {
 	          	  	lat1   = data1[i].latitude;
 		          	lon1   = data1[i].longitude;
 		            date1  = data1[i].date;
-		            vel1   = data1[i].speed;
-		            rev1   = data1[i].rpm;
+		            vel1   = date1[0].speed;
+		            rev1   = date1[0].rpm;
 		            var year1  = date1[0].concat(date1[1],date1[2],date1[3]);
 		            var month1 = date1[4].concat(date1[5]);
 		            var day1   = date1[6].concat(date1[7]);
@@ -467,6 +466,7 @@ function historical(initialdate, finaldate) {
 		});
 	}
 	if (car2 == 1) {
+		console.log('historical SI ENTRA CAR2')
 		const senddate = {
 			database: "gpsdata2",
 			initialdate: initialdate,
@@ -518,8 +518,8 @@ function historical(initialdate, finaldate) {
 	        }
 	    })
 	} 
-	if (car1 != 1 && car2 != 1) {
-		alert('No selected car!');
+	else {
+		alert('No data between those dates');
 	}
 }
 //Borrar data Tabs
@@ -529,10 +529,10 @@ function historical(initialdate, finaldate) {
 	}
 //Borrar Data Carro 1
 	function erasecar1(layerGroup1){
-		layerGroup1.removeLayer();
+		layerGroup1.clearLayers();
 	}
 //Borrar Data Carro2
 	function erasecar2(layerGroup2){
-		layerGroup2.removeLayer();
+		layerGroup2.clearLayers();
 	}
 </script>
