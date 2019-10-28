@@ -18,8 +18,8 @@ print("Database version : {0}".format(data))
 
 def main():
 
-    IP = '172.31.31.63'
-    PORT = 5000
+    IP = '172.31.89.47'
+    PORT = 6000
     # Creating the socket to lisent UDP packets
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.bind((IP, PORT))  # Config the IP and PORT

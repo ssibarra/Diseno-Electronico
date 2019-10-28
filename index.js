@@ -59,6 +59,6 @@ app.post("/historical", (req, res) => {
   }
 });
 
-app.listen(80, () => {
+app.listen(7000, () => {
   console.log("Server on");
 });
